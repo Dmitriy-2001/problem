@@ -1,0 +1,81 @@
+class BankAccount {
+
+   protected int amount; // создайте переменную int amount. Доступ к переменной должен быть только из наследников и классов в текущем пакете
+    protected String currency; // создайте переменную String currency. Доступ к переменной должен быть только из наследников и классов в текущем пакете
+
+    public void replenishBalance(int amount) {
+       this.amount += amount;
+       System.out.println("Счёт пополнен на " + amount + " " + currency); // реализуйте метод. Он общий для всех наследников
+    }
+
+    public void withdrawCash(int amount) {
+    }
+
+    public void showBalance() {
+    }
+}
+
+class DebitAccount extends BankAccount /* унаследуйте класс от BankAccount */ {
+
+    public DebitAccount(int amount, String currency) {
+       if (amount < 0) {
+            System.out.println("Баланс дебетового счета не может быть меньше 0");
+        } else {
+            this.amount = amount;
+            this.currency = currency;
+        } // если amount < 0, вывести сообщение "Баланс дебетового счета не может быть меньше 0"
+        // иначе присвоить переменным amount и currency значения, переданные в конструкторе
+    }
+
+    @Override
+    public void withdrawCash(int amount) {
+       if (this.amount >= amount) {
+            this.amount -= amount;
+            System.out.println("Вы сняли " + amount + " " + currency);
+        } else {
+            System.out.println("У вас недостаточно средств для снятия " + amount + " " + currency);
+        }// если на счету достаточно денег
+          
+        
+
+  // вычесть amount из amount класса
+            // вывести сообщение "Вы сняли {amount} {currency}"
+        // иначе вывести сообщение "У вас недостаточно средств для снятия суммы {amount} {currency}"
+        
+        
+    }
+
+    @Override
+    public void showBalance() {
+        System.out.println("На вашем счету осталось " + amount + " " + currency); // вывести сообщение "На вашем счету осталось {amount} {currency}"
+    }
+}
+
+  class CreditAccount extends BankAccount {
+    private int creditLimit;
+
+    public CreditAccount(int amount, String currency, int creditLimit) {
+        this.amount = amount;
+        this.currency = currency;
+        this.creditLimit = creditLimit;
+    }
+
+    @Override
+    public void withdrawCash(int amount) {
+        if (this.amount + creditLimit >= amount) {
+            this.amount -= amount;
+            System.out.println("Вы сняли " + amount + " " + currency);
+        } else {
+            System.out.println("У вас недостаточно средств для снятия " + amount + " " + currency);
+        }
+    }
+
+    @Override
+    public void showBalance() {
+        if (this.amount >= 0) {
+            System.out.println("На вашем счету осталось " + amount + " " + currency);
+        } else {
+            System.out.println("Задолженность по кредитному счету составляет " + Math.abs(amount) + " " + currency);
+        }
+    }
+}
